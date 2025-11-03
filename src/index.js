@@ -10,12 +10,22 @@ const tasks = [
   { id: 5, title: 'Deploy Project', completed: false, priority: 'medium', createdAt: new Date() }
 ];
 
+// Root route
 app.get('/', (req, res) => {
   res.send('Task Management API is running for second time!');
 });
 
+// Tasks route
 app.get('/tasks', (req, res) => {
   res.json(tasks);
+});
+
+// Health check route
+app.get('/health', (req, res) => {
+  res.json({
+    status: "healthy",
+    uptime: process.uptime()  // seconds since the server started
+  });
 });
 
 app.listen(port, () => {
