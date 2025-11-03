@@ -12,20 +12,32 @@ const tasks = [
 
 // Root route
 app.get('/', (req, res) => {
-  res.send('Task Management API is running for second time!');
+  res.send('Task Management API is running for the second time!');
 });
 
-// Tasks route
+// Get all tasks
 app.get('/tasks', (req, res) => {
   res.json(tasks);
 });
 
-// Health check route
+// Health route
 app.get('/health', (req, res) => {
   res.json({
     status: "healthy",
-    uptime: process.uptime()  // seconds since the server started
+    uptime: process.uptime()
   });
+});
+
+// Get task by ID route
+app.get('/task/:id', (req, res) => {
+  const id = parseInt(req.params.id); // convert string to number
+  const task = tasks.find(t => t.id === id);
+
+  if (!task) {
+    return res.status(404).json({ error: "Task not found" });
+  }
+
+  res.json(task);
 });
 
 app.listen(port, () => {
