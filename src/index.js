@@ -1,6 +1,5 @@
 const express = require('express');
-const app = express();
-const port = 3000;
+const router = express.Router();
 
 const tasks = [
   { id: 1, title: 'Learn Node.js', completed: false, priority: 'high', createdAt: new Date() },
@@ -10,27 +9,20 @@ const tasks = [
   { id: 5, title: 'Deploy Project', completed: false, priority: 'medium', createdAt: new Date() }
 ];
 
-// Root route
-app.get('/', (req, res) => {
-  res.send('Task Management API is running for the second time!');
-});
-
-// Get all tasks
-app.get('/tasks', (req, res) => {
+// GET all tasks
+router.get('/', (req, res) => {
   res.json(tasks);
 });
 
-// Health route
-app.get('/health', (req, res) => {
-  res.json({
-    status: "healthy",
-    uptime: process.uptime()
-  });
-});
+// GET a task by ID (with validation)
+router.get('/:id', (req, res) => {
+  const id = Number(req.params.id);
 
-// Get task by ID route
-app.get('/task/:id', (req, res) => {
-  const id = parseInt(req.params.id); // convert string to number
+  // Check if ID is a valid positive number
+  if (isNaN(id) || id <= 0) {
+    return res.status(400).json({ error: "Invalid ID format" });
+  }
+
   const task = tasks.find(t => t.id === id);
 
   if (!task) {
@@ -40,6 +32,4 @@ app.get('/task/:id', (req, res) => {
   res.json(task);
 });
 
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
-});
+module.exports = router;

@@ -1,28 +1,6 @@
 ========================
-GET /task/2
+GET /tasks/abc
 ========================
-Request:
-GET http://localhost:3000/task/2
-
-Response Status: 200 OK
-Response Body:
-{
-  "id": 2,
-  "title": "Build REST API",
-  "completed": false,
-  "priority": "medium",
-  "createdAt": "2025-11-03T12:45:00.123Z"
-}
-
-
-========================
-GET /task/99
-========================
-Request:
-GET http://localhost:3000/task/99
-
-Response Status: 404 Not Found
-Response Body:
-{
-  "error": "Task not found"
-}
+Status: 400 Bad Request
+Response:
+{ "error": "Invalid ID format" }
